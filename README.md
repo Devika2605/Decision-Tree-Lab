@@ -6,7 +6,7 @@ The project focuses on making tree-based models **easy to understand using inter
 
 ---
 Live at:  
-https://your-vercel-link.vercel.app
+https://decision-tree-lab.vercel.app/
 
 ---
 ## Features
