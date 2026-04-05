@@ -115,11 +115,21 @@ const MAX_DEPTH = Math.max(...ALL_NODES.map(n => n.depth));
 
 // ── LiveTree SVG ──────────────────────────────────────────────────────────────
 function LiveTree({ patient, treeAnimating, visitedIds }) {
-  const SVG_W  = 540;
-  const NODE_H = 34;
-  const YGAP   = 72;
+  const SVG_W  = 340;
+  const NODE_H = 24;
+  const YGAP   = 50;
   const SVG_H  = (MAX_DEPTH + 1) * YGAP + NODE_H + 20;
-  const nodeX  = n => n.cx * SVG_W;
+  const nodeX = n => {
+  let x = n.cx * (SVG_W - 40) + 20;
+
+  // spread ONLY deepest leaf nodes
+  if (n.leaf && n.depth === MAX_DEPTH) {
+    const spread = 210;
+    x += (n.cx - 0.5) * spread;
+  }
+
+  return x;
+};
   const nodeY  = n => n.depth * YGAP + 24;
 
   return (
@@ -151,7 +161,7 @@ function LiveTree({ patient, treeAnimating, visitedIds }) {
                 y={(fromY + toY) / 2}
                 textAnchor="middle"
                 fill={isActive ? edgeColor : '#ffffff20'}
-                fontSize={9}
+                fontSize={7}
                 fontFamily="'DM Mono', monospace"
                 style={{ transition: 'fill .4s' }}
               >
@@ -166,7 +176,7 @@ function LiveTree({ patient, treeAnimating, visitedIds }) {
           const nx = nodeX(node), ny = nodeY(node);
           const isVisited = visitedIds.includes(node.id);
           const isCurrent = visitedIds.length > 0 && visitedIds[visitedIds.length - 1] === node.id;
-          const nodeW     = node.leaf ? 90 : 124;
+          const nodeW = node.leaf ? 60 : 65;
 
           let fill = '#0c0c1a', stroke = '#ffffff14', txtColor = '#ffffff40', subColor = '#ffffff25';
           if (isVisited) {
@@ -198,7 +208,7 @@ function LiveTree({ patient, treeAnimating, visitedIds }) {
               <text
                 x={nx} y={ny + (node.leaf ? 5 : 3)}
                 textAnchor="middle"
-                fill={txtColor} fontSize={node.leaf ? 9 : 8}
+                fill={txtColor} fontSize={node.leaf ? 7 : 6}
                 fontWeight={node.leaf ? '700' : '400'}
                 fontFamily="'DM Mono', monospace"
                 style={{ transition: 'fill .4s' }}
@@ -209,7 +219,7 @@ function LiveTree({ patient, treeAnimating, visitedIds }) {
                 <text
                   x={nx} y={ny + 14}
                   textAnchor="middle"
-                  fill={subColor} fontSize={7}
+                  fill={subColor} fontSize={6}
                   fontFamily="'DM Mono', monospace"
                   style={{ transition: 'fill .4s' }}
                 >
@@ -240,7 +250,7 @@ function Scoreboard({ humanW, played, streak }) {
       ].map(({ label, value, sub, color, bar }) => (
         <div key={label} style={{ background: '#0b0b1a', padding: '.75rem 1rem', textAlign: 'center' }}>
           <div style={{ fontSize: 10, letterSpacing: '.1em', color: '#4b5563', textTransform: 'uppercase', fontFamily: "'DM Mono', monospace" }}>{label}</div>
-          <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 800, color, marginTop: 4 }}>{value}</div>
+          <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 750, color, marginTop: 4 }}>{value}</div>
           {bar !== null && (
             <div style={{ height: 3, background: '#ffffff08', borderRadius: 2, margin: '5px 0 3px', overflow: 'hidden' }}>
               <div style={{ height: '100%', width: `${bar}%`, background: color, borderRadius: 2, transition: 'width .6s cubic-bezier(.4,0,.2,1)' }} />
@@ -287,7 +297,7 @@ function PatientCard({ patient, caseIdx, total }) {
           return (
             <div key={key} style={{ background: '#06060f', borderRadius: 8, padding: '.6rem .5rem', textAlign: 'center', border: `0.5px solid ${color}25` }}>
               <div style={{ fontSize: 10, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '.1em', fontFamily: "'DM Mono', monospace" }}>{label}</div>
-              <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 800, color, marginTop: 4 }}>{v}</div>
+              <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 750, color, marginTop: 4 }}>{v}</div>
               <div style={{ fontSize: 10, color: '#4b5563', marginTop: 2, fontFamily: "'DM Mono', monospace" }}>{unit}</div>
             </div>
           );
@@ -474,7 +484,7 @@ export default function AIvsHuman() {
             borderTop: `3px solid ${correct ? RC.low : RC.high}`,
             borderRadius: 12, padding: '1rem', textAlign: 'center', marginBottom: '1rem',
           }}>
-            <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 30, fontWeight: 800, color: correct ? RC.low : RC.high }}>
+            <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 16, fontWeight: 800, color: correct ? RC.low : RC.high }}>
               {correct ? 'Correct!' : 'Wrong'}
             </div>
             <div style={{ fontSize: 11, color: '#4b5563', marginTop: 4 }}>
@@ -493,7 +503,7 @@ export default function AIvsHuman() {
                 borderRadius: 10, padding: '.85rem', textAlign: 'center',
               }}>
                 <div style={{ fontSize: 10, color: '#4b5563', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 6 }}>{label}</div>
-                <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 16, fontWeight: 800, color: RC[value], textTransform: 'capitalize' }}>{value} Risk</div>
+                <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 800, color: RC[value], textTransform: 'capitalize' }}>{value} Risk</div>
                 <div style={{ fontSize: 20, marginTop: 4, color: ok ? RC.low : RC.high }}>{ok ? '✓' : '✗'}</div>
               </div>
             ))}
@@ -546,7 +556,7 @@ export default function AIvsHuman() {
               borderRadius: 12, padding: '1.25rem', textAlign: 'center', marginBottom: '1rem',
             }}>
               <div style={{ fontSize: 10, letterSpacing: '.12em', color: '#4b5563', textTransform: 'uppercase', marginBottom: 8 }}>Final Score</div>
-              <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 48, fontWeight: 800, color: '#a78bfa' }}>{finalPct}%</div>
+              <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 10, fontWeight: 800, color: '#a78bfa' }}>{finalPct}%</div>
               <div style={{ fontSize: 12, color: '#4b5563', marginTop: 4 }}>{humanW} of {played} correct · AI: 100%</div>
               <div style={{ marginTop: 12, fontSize: 13, color: '#c4c4d4' }}>
                 {humanW === played ? '🏆 Perfect score! Incredible.' : humanW >= 6 ? '💪 Strong performance.' : humanW >= 4 ? '🤔 Keep practicing.' : '🤖 The AI wins this round.'}
