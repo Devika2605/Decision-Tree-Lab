@@ -61,7 +61,14 @@ export default function Intro() {
   const [shownConcepts,  setShownConcepts]  = useState([]);
   const timersRef = useRef([]);
   const navigate  = useNavigate();
+  const [activeConcept, setActiveConcept] = useState(0);
+    useEffect(() => {
+    const id = setInterval(() => {
+        setActiveConcept(i => (i + 1) % concepts.length);
+    }, 1000);
 
+    return () => clearInterval(id);
+    }, []);
   const runTreeAnimation = () => {
     timersRef.current.forEach(t => clearTimeout(t));
     timersRef.current = [];
@@ -243,13 +250,14 @@ export default function Intro() {
         marginBottom: '1.4rem',
       }}>
         {concepts.map((c, i) => (
-          <ConceptCard
-            key={i}
-            concept={c}
-            visible={shownConcepts.includes(i)}
-            delay={i * 0.07}
-          />
-        ))}
+  <ConceptCard
+    key={i}
+    concept={c}
+    visible={shownConcepts.includes(i)}
+    delay={i * 0.07}
+    active={activeConcept === i}
+  />
+))}
       </div>
 
       
@@ -375,7 +383,7 @@ export default function Intro() {
 }
 
 /* ── Concept Card ── */
-function ConceptCard({ concept: c, visible, delay }) {
+function ConceptCard({ concept: c, visible, delay, active }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -384,16 +392,23 @@ function ConceptCard({ concept: c, visible, delay }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         borderRadius: 12,
-        border: `1px solid ${hovered ? c.color + '65' : c.color + '22'}`,
-        background: hovered
-          ? `linear-gradient(135deg, ${c.color}12, ${c.color}06)`
-          : '#0f0f18',
+        border: `1px solid ${
+        active ? c.color : hovered ? c.color + '65' : c.color + '22'
+        }`,
         padding: '0.9rem 0.85rem',
-        cursor: 'default',
-        opacity: visible ? 1 : 0,
+        boxShadow: active
+        ? `0 0 18px ${c.color}70`
+        : hovered
+        ? `0 10px 30px ${c.color}20`
+        : 'none',
+
         transform: visible
-          ? hovered ? 'translateY(-4px) scale(1.015)' : 'translateY(0) scale(1)'
-          : 'translateY(14px) scale(0.92)',
+        ? active
+            ? 'translateY(-4px) scale(1.04)'
+            : hovered
+            ? 'translateY(-4px) scale(1.015)'
+            : 'translateY(0) scale(1)'
+        : 'translateY(14px) scale(0.92)',
         transition: `opacity 0.4s ease ${delay}s, transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease`,
         boxShadow: hovered ? `0 10px 30px ${c.color}20` : 'none',
         position: 'relative',
