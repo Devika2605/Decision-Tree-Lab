@@ -9,13 +9,12 @@ import Advanced    from './modules/Advanced';
 import Quiz        from './modules/Quiz';
 
 const TABS = [
-  { label: 'Intro',       path: '/'            },
-  { label: 'Builder',     path: '/builder'      },
-
-  { label: 'Challenge', path: '/challenge'    },
-  { label: 'Algorithm',   path: '/overfitting'  },
-  { label: 'Advanced',    path: '/advanced'     },
-  { label: 'Quiz',        path: '/quiz'         },
+  { label: 'Intro', path: '/' },
+  { label: 'Metrics', path: '/builder' },
+  { label: 'AI-Challenge', path: '/challenge' },
+  { label: 'Complexity', path: '/overfitting' },
+  { label: 'Advanced', path: '/advanced' },
+  { label: 'Quiz', path: '/quiz' },
 ];
 
 function Layout() {

@@ -277,7 +277,59 @@ export default function Intro() {
           and clinical decision support.
         </p>
       </div>
+        {/* ── MODEL COMPLEXITY ── */}
+<SectionLabel>Model Complexity</SectionLabel>
 
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gap: '0.6rem',
+  marginBottom: '1.4rem',
+}}>
+
+  <div style={{
+    borderRadius: 10,
+    border: '1px solid #fbbf2425',
+    background: '#1a1406',
+    padding: '0.7rem',
+  }}>
+    <p style={{ fontSize: '0.62rem', color: '#fbbf24', fontWeight: 700, margin: '0 0 0.25rem 0' }}>
+      Underfitting
+    </p>
+    <p style={{ fontSize: '0.66rem', color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>
+      The model is too simple and cannot capture important patterns in the data.
+    </p>
+  </div>
+
+  <div style={{
+    borderRadius: 10,
+    border: '1px solid #22d3ee25',
+    background: '#07161a',
+    padding: '0.7rem',
+  }}>
+    <p style={{ fontSize: '0.62rem', color: '#22d3ee', fontWeight: 700, margin: '0 0 0.25rem 0' }}>
+      Balanced Model
+    </p>
+    <p style={{ fontSize: '0.66rem', color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>
+      The model captures real patterns while still generalizing well to new data.
+    </p>
+  </div>
+
+  <div style={{
+    borderRadius: 10,
+    border: '1px solid #ff6b9d25',
+    background: '#1a0710',
+    padding: '0.7rem',
+  }}>
+    <p style={{ fontSize: '0.62rem', color: '#ff6b9d', fontWeight: 700, margin: '0 0 0.25rem 0' }}>
+      Overfitting
+    </p>
+    <p style={{ fontSize: '0.66rem', color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>
+      The model memorizes training data and performs poorly on unseen data.
+    </p>
+  </div>
+
+</div>
       {/* ── CTA ── */}
       <button
         onClick={() => navigate('/builder')}
@@ -405,8 +457,11 @@ function ConceptCard({ concept: c, visible, delay }) {
         fontFamily: 'Georgia, serif',
       }}>{c.desc}</p>
     </div>
+    
   );
+  
 }
+
 
 /* ── Helpers ── */
 function SectionLabel({ children }) {
